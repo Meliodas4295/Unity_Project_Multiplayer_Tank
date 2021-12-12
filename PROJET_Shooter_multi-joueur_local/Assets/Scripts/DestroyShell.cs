@@ -18,6 +18,10 @@ public class DestroyShell : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Tank"))
+        {
+            collision.gameObject.GetComponent<TankManager>().SetDamageToTank(0.1f);
+        }
         Destroy(gameObject);
     }
 }

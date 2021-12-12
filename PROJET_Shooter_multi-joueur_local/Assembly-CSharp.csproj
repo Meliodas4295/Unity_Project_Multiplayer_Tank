@@ -54,9 +54,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\TankManager.cs" />
-    <Compile Include="Assets\Scripts\SpawnShellManager.cs" />
-    <Compile Include="Assets\Scripts\DestroyShell.cs" />
     <Compile Include="Assets\Scripts\SpawnMineManager.cs" />
+    <Compile Include="Assets\Scripts\SpawnTank.cs" />
+    <Compile Include="Assets\Scripts\DestroyShell.cs" />
+    <Compile Include="Assets\Scripts\HealthBar.cs" />
+    <Compile Include="Assets\Scripts\SpawnMunitionPack.cs" />
+    <Compile Include="Assets\Scripts\SpawnShellManager.cs" />
+    <Compile Include="Assets\Scripts\SpawnHealthPack.cs" />
+    <Compile Include="Assets\Scripts\SpawnPowerUp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Bibliotheque\Fonts\Bowlby_One\FontLicense.txt" />

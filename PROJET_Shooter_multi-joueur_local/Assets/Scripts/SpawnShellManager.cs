@@ -6,7 +6,9 @@ public class SpawnShellManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject shellPrefab;
-    private float timePressed;
+    public float timePressed;
+    public float resetMunitionTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,36 +22,43 @@ public class SpawnShellManager : MonoBehaviour
 
     void KeyPressedTimer()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (gameObject.GetComponentInParent<TankManager>().numberMunition != 0)
         {
-            timePressed = Time.time;
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            timePressed = Time.time - timePressed;
-            switch ((int)timePressed)
+            if (Input.GetKeyDown(PlayerBouton()))
             {
-                case 0:
-                    ShellManager(10);
-                    break;
-                case 1:
-                    ShellManager(20);
-                    break;
-                case 2:
-                    ShellManager(30);
-                    break;
-                default:
-                    ShellManager(30);
-                    break;
+                timePressed = Time.time;
+            }
+
+            if (Input.GetKeyUp(PlayerBouton()))
+            {
+                timePressed = Time.time - timePressed;
+                ShellManager(timePressed * 20);
+                gameObject.GetComponentInParent<TankManager>().numberMunition -= 1;
+                Debug.Log(gameObject.GetComponentInParent<TankManager>().numberMunition);
+                if(gameObject.GetComponentInParent<TankManager>().numberMunition == 0)
+                {
+                    resetMunitionTime = Time.time;
+                }
             }
         }
     }
 
-    void ShellManager(int power)
+    void ShellManager(float power)
     {
         GameObject shell = Instantiate(shellPrefab, transform.position, transform.rotation);
-        //shellPrefabs.Add(shellPrefab);
         shell.GetComponent<Rigidbody>().AddForce(transform.forward * power, ForceMode.Impulse);
+    }
+
+    KeyCode PlayerBouton()
+    {
+        if(gameObject.GetComponentInParent<TankManager>().idTank == 1)
+        {
+            return KeyCode.Space;
+        }
+        else
+        {
+            return KeyCode.F;
+        }
+
     }
 }
