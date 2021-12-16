@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Shell
-  - LevelArt
-  - Ground
   - HealthPack
-  - MunitionTag
   - Tank
+  - MinePack
+  - Shield
+  - ThunderBolt
+  - MunitionPack
   layers:
   - Default
   - TransparentFX

@@ -7,12 +7,14 @@ public class HealthBar : MonoBehaviour
 {
     public GameObject healthBar;
     public GameObject sprite;
+    public bool IsGameOver = false;
     private Color goodColor = new Color(0, 128, 0);
     private Color middleColor = new Color(255, 165, 0);
     private Color badColor = new Color(255, 0, 0);
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(gameObject.name, this.gameObject);
         sprite.GetComponent<Image>().color = goodColor;
     }
 
@@ -25,6 +27,11 @@ public class HealthBar : MonoBehaviour
     public void SetDamages(float value)
     {
         healthBar.GetComponent<Scrollbar>().size -= value;
+
+        if(healthBar.GetComponent<Scrollbar>().size == 0)
+        {
+            IsGameOver = true;
+        }
 
         float totalValue = healthBar.GetComponent<Scrollbar>().size;
 

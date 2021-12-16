@@ -7,7 +7,7 @@ public class DestroyShell : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameObject.GetComponentInChildren<ParticleSystem>().Stop();
     }
 
     // Update is called once per frame
@@ -22,6 +22,7 @@ public class DestroyShell : MonoBehaviour
         {
             collision.gameObject.GetComponent<TankManager>().SetDamageToTank(0.1f);
         }
-        Destroy(gameObject);
+        gameObject.GetComponentInChildren<ParticleSystem>().Play();
+        Destroy(gameObject,0.5f);
     }
 }

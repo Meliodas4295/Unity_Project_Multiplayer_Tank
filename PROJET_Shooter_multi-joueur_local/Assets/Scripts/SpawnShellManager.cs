@@ -7,6 +7,7 @@ public class SpawnShellManager : MonoBehaviour
     [SerializeField]
     private GameObject shellPrefab;
     public float timePressed;
+    private float timeDrop;
     public float resetMunitionTime;
 
     // Start is called before the first frame update
@@ -28,13 +29,19 @@ public class SpawnShellManager : MonoBehaviour
             {
                 timePressed = Time.time;
             }
+            if (Input.GetKey(PlayerBouton()))
+            {
+                timeDrop += Time.deltaTime;
+                gameObject.GetComponentInParent<TankManager>().pullCharge.GetComponent<PullCharge>().Charge(timeDrop/10);
+            }
 
             if (Input.GetKeyUp(PlayerBouton()))
             {
-                timePressed = Time.time - timePressed;
-                ShellManager(timePressed * 20);
+                timeDrop = 0;
+                gameObject.GetComponentInParent<TankManager>().pullCharge.GetComponent<PullCharge>().Charge(timeDrop);
+                timePressed = (Time.time - timePressed)+1;
+                ShellManager(timePressed * 40);
                 gameObject.GetComponentInParent<TankManager>().numberMunition -= 1;
-                Debug.Log(gameObject.GetComponentInParent<TankManager>().numberMunition);
                 if(gameObject.GetComponentInParent<TankManager>().numberMunition == 0)
                 {
                     resetMunitionTime = Time.time;

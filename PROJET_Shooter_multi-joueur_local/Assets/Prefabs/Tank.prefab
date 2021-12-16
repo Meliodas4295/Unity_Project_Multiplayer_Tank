@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minePrefab: {fileID: 1528889545934173998, guid: 54375fc862add4b4aa4d5c69d031ceeb, type: 3}
+  timeBeforeActivation: 0
 --- !u!1 &363659374038030226
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,7 +436,7 @@ Transform:
   m_GameObject: {fileID: 363659374038030238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 363659374037600882}
   - {fileID: 363659374063206045}
@@ -458,7 +459,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &363659374037995656
 BoxCollider:
@@ -485,11 +486,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a2e3d4fc9bb044eb3cd8705c49b8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedTranslation: 5
-  speedRotation: 10
+  shieldPowerUpPrefab: {fileID: 3367375223911240119, guid: 01a399a394c24774d9f4d0fe5f647f24, type: 3}
   isLaunch: 0
   healthBar: {fileID: 0}
+  pullCharge: {fileID: 0}
   idTank: 0
+  numberMunition: 3
+  numberMine: 3
+  numberOfShell: {fileID: 0}
+  numberOfMine: {fileID: 0}
 --- !u!1 &363659374063206034
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,3 +614,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shellPrefab: {fileID: 5538335019284852740, guid: 3442e932d1e401e4c9beb533c3ad822c, type: 3}
   timePressed: 0
+  resetMunitionTime: 0
