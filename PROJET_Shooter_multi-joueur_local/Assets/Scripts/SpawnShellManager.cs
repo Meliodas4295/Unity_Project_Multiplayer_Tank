@@ -18,7 +18,10 @@ public class SpawnShellManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        KeyPressedTimer();
+        if (!gameObject.GetComponentInParent<TankManager>().GetIsGameOver())
+        {
+            KeyPressedTimer();
+        }
     }
 
     void KeyPressedTimer()

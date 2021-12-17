@@ -26,14 +26,26 @@ public class SpawnManager : MonoBehaviour
     private NavMeshHit hit;
 
     private int randomPowerUp;
-    private List<Vector3> positionTank = new List<Vector3>();
-    private List<Quaternion> rotationTank = new List<Quaternion>();
+    public List<Vector3> positionTank = new List<Vector3>();
+    public List<Quaternion> rotationTank = new List<Quaternion>();
 
     private float spawnRange = 40f * 3;
     private int randomPack;
 
     private float timerPack;
     private float timerPU;
+
+    private bool isGameOver = false;
+
+    public bool GetIsGameOver()
+    {
+        return this.isGameOver;
+    }
+
+    public void SetIsGameOver(bool isGameOver)
+    {
+        this.isGameOver = isGameOver;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -46,17 +58,20 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
-        timerPack += Time.deltaTime;
-        timerPU += Time.deltaTime;
-        if(timerPack > 30)
+        if (!isGameOver)
         {
-            InstantiatePack();
-            timerPack = 0;
-        }
-        if(timerPU > 60)
-        {
-            InstantiatePowerUp();
-            timerPU = 0;
+            timerPack += Time.deltaTime;
+            timerPU += Time.deltaTime;
+            if (timerPack > 30)
+            {
+                InstantiatePack();
+                timerPack = 0;
+            }
+            if (timerPU > 60)
+            {
+                InstantiatePowerUp();
+                timerPU = 0;
+            }
         }
     }
 
@@ -93,7 +108,7 @@ public class SpawnManager : MonoBehaviour
             float spawnPosX = Random.Range(-spawnRange, spawnRange);
             float spawnPosZ = Random.Range(-spawnRange, spawnRange);
             Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
-            randomPack = Random.Range(0, 2);
+            randomPack = Random.Range(0, 3);
             if (NavMesh.SamplePosition(randomPos, out hit, 15, NavMesh.AllAreas))
             {
                 if (randomPack == (int)Packs.Munition)
@@ -102,11 +117,11 @@ public class SpawnManager : MonoBehaviour
                 }
                 if (randomPack == (int)Packs.Health)
                 {
-                    GameObject munition = Instantiate(healthPackPrefab, hit.position, healthPackPrefab.transform.rotation);
+                    GameObject healthPack = Instantiate(healthPackPrefab, hit.position, healthPackPrefab.transform.rotation);
                 }
                 if (randomPack == (int)Packs.Mine)
                 {
-                    GameObject munition = Instantiate(minePackPrefab, hit.position, minePackPrefab.transform.rotation);
+                    GameObject minePack = Instantiate(minePackPrefab, hit.position, minePackPrefab.transform.rotation);
                 }
             }
 
@@ -125,18 +140,23 @@ public class SpawnManager : MonoBehaviour
             tankManger.idTank = i;
             tankManger.numberOfShell = GameObject.Find("NumberOfShell" + i).GetComponent<TextMeshProUGUI>();
             tankManger.numberOfMine = GameObject.Find("NumberOfMine" + i).GetComponent<TextMeshProUGUI>();
-            if (i == 1)
-            {
-                tank.GetComponentInChildren<Camera>().rect = new Rect(0, 0, 0.5f, 1);
-            }
-            else
-            {
-                tank.GetComponentInChildren<Camera>().rect = new Rect(0.5f, 0, 0.5f, 1);
-            }
+            SplitScreenCamera(tank, tankManger);
         }
     }
 
-    private void StartTankPositionAndRotation()
+    public void SplitScreenCamera(GameObject tank, TankManager tankManger)
+    {
+        if (tankManger.idTank == 1)
+        {
+            tank.GetComponentInChildren<Camera>().rect = new Rect(0, 0, 0.5f, 1);
+        }
+        else
+        {
+            tank.GetComponentInChildren<Camera>().rect = new Rect(0.5f, 0, 0.5f, 1);
+        }
+    }
+
+    public void StartTankPositionAndRotation()
     {
         positionTank.Add(new Vector3(120, 0, -120));
         positionTank.Add(new Vector3(-100, 0, 110));

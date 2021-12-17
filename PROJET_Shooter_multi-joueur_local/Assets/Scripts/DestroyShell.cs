@@ -20,7 +20,7 @@ public class DestroyShell : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Tank"))
         {
-            collision.gameObject.GetComponent<TankManager>().SetDamageToTank(0.1f);
+            collision.gameObject.GetComponent<TankManager>().SetDamageToTank(0.3f);
         }
         gameObject.GetComponentInChildren<ParticleSystem>().Play();
         Destroy(gameObject,0.5f);

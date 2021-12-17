@@ -13,7 +13,7 @@ public class TankManager : MonoBehaviour
 
     private Rigidbody tankRb;
     private float speedTranslation = 30;
-    private float speedRotation = 5;
+    private float speedRotation = 2;
     public bool isLaunch = false;
     public HealthBar healthBar;
     public PullCharge pullCharge;
@@ -24,9 +24,28 @@ public class TankManager : MonoBehaviour
     public TextMeshProUGUI numberOfShell;
     public TextMeshProUGUI numberOfMine;
     private float shieldBonusTimer;
-    public bool IsGameOver = false;
+    private bool isGameOver = false;
+    private bool isWinner = true;
 
+    public bool GetIsGameOver()
+    {
+        return this.isGameOver;
+    }
 
+    public void SetIsGameOver(bool isGameOver)
+    {
+        this.isGameOver = isGameOver;
+    }
+
+    public bool GetIsWinner()
+    {
+        return this.isWinner;
+    }
+
+    public void SetIsWinner(bool isWinner)
+    {
+        this.isWinner = isWinner;
+    }
     void Start()
     {
         tankRb = gameObject.GetComponent<Rigidbody>();
@@ -52,13 +71,11 @@ public class TankManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsGameOver)
+        Debug.Log(isGameOver);
+        if (!isGameOver)
         {
             tankRb.velocity = transform.forward * movement.y * speedTranslation;
             tankRb.angularVelocity = new Vector3(0, 1, 0) * movement.x * speedRotation;
-            //tankRb.MovePosition(tankRb.position + (transform.forward * movement.y * speedTranslation * Time.deltaTime));
-            //transform.Translate(Vector3.forward * verticalInput * speedTranslation * Time.deltaTime);
-            //transform.Rotate(new Vector3(0, 1, 0) * movement.x * speedRotation * Time.deltaTime);
             if (numberMunition == 0)
             {
                 if (Time.time > gameObject.GetComponentInChildren<SpawnShellManager>().resetMunitionTime + 5f)

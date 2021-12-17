@@ -28,11 +28,6 @@ public class HealthBar : MonoBehaviour
     {
         healthBar.GetComponent<Scrollbar>().size -= value;
 
-        if(healthBar.GetComponent<Scrollbar>().size == 0)
-        {
-            IsGameOver = true;
-        }
-
         float totalValue = healthBar.GetComponent<Scrollbar>().size;
 
         SetColor(totalValue);

@@ -24,7 +24,7 @@ public class DestroyMine : MonoBehaviour
             {
                 gameObject.GetComponentInChildren<ParticleSystem>().Play();
                 Destroy(gameObject, 0.5f);
-                other.gameObject.GetComponent<TankManager>().SetDamageToTank(0.1f);
+                other.gameObject.GetComponent<TankManager>().SetDamageToTank(0.3f);
             }
         }
     }

@@ -15,16 +15,25 @@ public class SpawnMineManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!gameObject.GetComponentInParent<TankManager>().GetIsGameOver())
+        {
+            CreateMine();
+        }
+    }
+
+    private void CreateMine()
+    {
         if (gameObject.GetComponentInParent<TankManager>().numberMine != 0)
         {
             if (Input.GetKeyDown(PlayerBouton()))
             {
                 GameObject mine = Instantiate(minePrefab, transform.position, transform.rotation);
                 timeBeforeActivation = Time.time;
-                gameObject.GetComponentInParent<TankManager>().numberMine -= 1; 
+                gameObject.GetComponentInParent<TankManager>().numberMine -= 1;
             }
         }
     }
+
     KeyCode PlayerBouton()
     {
         if (gameObject.GetComponentInParent<TankManager>().idTank == 1)
