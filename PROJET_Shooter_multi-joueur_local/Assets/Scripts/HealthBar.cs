@@ -5,23 +5,49 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    public GameObject healthBar;
-    public GameObject sprite;
-    public bool IsGameOver = false;
+    [SerializeField]
+    private GameObject healthBar;
+    [SerializeField]
+    private GameObject sprite;
+    private bool IsGameOver = false;
     private Color goodColor = new Color(0, 128, 0);
     private Color middleColor = new Color(255, 165, 0);
     private Color badColor = new Color(255, 0, 0);
     // Start is called before the first frame update
-    void Start()
+
+    public bool GetIsGameOver()
     {
-        Debug.Log(gameObject.name, this.gameObject);
-        sprite.GetComponent<Image>().color = goodColor;
+        return this.IsGameOver;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetIsGameOver(bool isGameOver)
     {
+        this.IsGameOver = isGameOver;
+    }
 
+    public GameObject GetHealthBar()
+    {
+        return this.healthBar;
+    }
+
+    public void SetHealthBar(GameObject healthBar)
+    {
+        this.healthBar = healthBar;
+    }
+
+    public GameObject GetSprite()
+    {
+        return this.sprite;
+    }
+
+    public void SetSprite(GameObject sprite)
+    {
+        this.sprite = sprite;
+    }
+
+    void Start()
+    {
+        sprite.GetComponent<Image>().color = goodColor;
     }
 
     public void SetDamages(float value)

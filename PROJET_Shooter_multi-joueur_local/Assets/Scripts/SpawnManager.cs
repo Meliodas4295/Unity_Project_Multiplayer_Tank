@@ -26,8 +26,8 @@ public class SpawnManager : MonoBehaviour
     private NavMeshHit hit;
 
     private int randomPowerUp;
-    public List<Vector3> positionTank = new List<Vector3>();
-    public List<Quaternion> rotationTank = new List<Quaternion>();
+    private List<Vector3> positionTank = new List<Vector3>();
+    private List<Quaternion> rotationTank = new List<Quaternion>();
 
     private float spawnRange = 40f * 3;
     private int randomPack;
@@ -37,6 +37,22 @@ public class SpawnManager : MonoBehaviour
 
     private bool isGameOver = false;
 
+    public List<Vector3> GetPositionTank()
+    {
+        return this.positionTank;
+    }
+    public void SetPositionTank(List<Vector3> positionTank)
+    {
+        this.positionTank = positionTank;
+    }
+    public List<Quaternion> GetRotationTank()
+    {
+        return this.rotationTank;
+    }
+    public void SetRotationTank(List<Quaternion> rotationTank)
+    {
+        this.rotationTank = rotationTank;
+    }
     public bool GetIsGameOver()
     {
         return this.isGameOver;
@@ -79,12 +95,9 @@ public class SpawnManager : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            float spawnPosX = Random.Range(-spawnRange, spawnRange);
-            float spawnPosZ = Random.Range(-spawnRange, spawnRange);
-            Vector3 randomPosShield = new Vector3(spawnPosX, 2.5f, spawnPosZ);
-            Vector3 randomPosSpeed = new Vector3(spawnPosX, 1.5f, spawnPosZ);
-            randomPowerUp = Random.Range(0, 2);
-                if (randomPowerUp == ((int)PowerUp.Speed))
+            Vector3 randomPosShield, randomPosSpeed, randomPosUnlimitedAmmunition;
+            RandomSpawnPositionPowerUp(out randomPosShield, out randomPosSpeed, out randomPosUnlimitedAmmunition);
+            if (randomPowerUp == ((int)PowerUp.Speed))
             {
                 if (NavMesh.SamplePosition(randomPosSpeed, out hit, 15, NavMesh.AllAreas))
                 {
@@ -98,33 +111,71 @@ public class SpawnManager : MonoBehaviour
                     Instantiate(shieldPrefab, randomPosShield, shieldPrefab.transform.rotation);
                 }
             }
+            else if (randomPowerUp == ((int)PowerUp.UnlimitedAmmunition))
+            {
+                if (NavMesh.SamplePosition(randomPosUnlimitedAmmunition, out hit, 15, NavMesh.AllAreas))
+                {
+                    Instantiate(unlimitedAmmunitionPrefab, randomPosUnlimitedAmmunition, unlimitedAmmunitionPrefab.transform.rotation);
+                }
+            }
         }
+    }
+
+    private void RandomSpawnPositionPowerUp(out Vector3 randomPosShield, out Vector3 randomPosSpeed, out Vector3 randomPosUnlimitedAmmunition)
+    {
+        float spawnPosX = Random.Range(-spawnRange, spawnRange);
+        float spawnPosZ = Random.Range(-spawnRange, spawnRange);
+        randomPosShield = new Vector3(spawnPosX, 2.5f, spawnPosZ);
+        randomPosSpeed = new Vector3(spawnPosX, 1.5f, spawnPosZ);
+        randomPosUnlimitedAmmunition = new Vector3(spawnPosX, 1.5f, spawnPosZ);
+        randomPowerUp = Random.Range(0, 3);
     }
 
     private void InstantiatePack()
     {
         for (int i = 0; i < 3; i++)
         {
-            float spawnPosX = Random.Range(-spawnRange, spawnRange);
-            float spawnPosZ = Random.Range(-spawnRange, spawnRange);
-            Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
-            randomPack = Random.Range(0, 3);
+            Vector3 randomPos = RandomSpawnPositionPack();
             if (NavMesh.SamplePosition(randomPos, out hit, 15, NavMesh.AllAreas))
             {
-                if (randomPack == (int)Packs.Munition)
-                {
-                    GameObject munition = Instantiate(munitionPackPrefab, hit.position, munitionPackPrefab.transform.rotation);
-                }
-                if (randomPack == (int)Packs.Health)
-                {
-                    GameObject healthPack = Instantiate(healthPackPrefab, hit.position, healthPackPrefab.transform.rotation);
-                }
-                if (randomPack == (int)Packs.Mine)
-                {
-                    GameObject minePack = Instantiate(minePackPrefab, hit.position, minePackPrefab.transform.rotation);
-                }
+                InstantiateMunitionPack();
+                InstantiateHealthPack();
+                InstantiateMinePack();
             }
 
+        }
+    }
+
+    private Vector3 RandomSpawnPositionPack()
+    {
+        float spawnPosX = Random.Range(-spawnRange, spawnRange);
+        float spawnPosZ = Random.Range(-spawnRange, spawnRange);
+        Vector3 randomPos = new Vector3(spawnPosX, 0.5f, spawnPosZ);
+        randomPack = Random.Range(0, 3);
+        return randomPos;
+    }
+
+    private void InstantiateMinePack()
+    {
+        if (randomPack == (int)Packs.Mine)
+        {
+            GameObject minePack = Instantiate(minePackPrefab, hit.position, minePackPrefab.transform.rotation);
+        }
+    }
+
+    private void InstantiateHealthPack()
+    {
+        if (randomPack == (int)Packs.Health)
+        {
+            GameObject healthPack = Instantiate(healthPackPrefab, hit.position, healthPackPrefab.transform.rotation);
+        }
+    }
+
+    private void InstantiateMunitionPack()
+    {
+        if (randomPack == (int)Packs.Munition)
+        {
+            GameObject munition = Instantiate(munitionPackPrefab, hit.position, munitionPackPrefab.transform.rotation);
         }
     }
 
@@ -134,19 +185,19 @@ public class SpawnManager : MonoBehaviour
         {
             GameObject tank = Instantiate(tankPrefab, positionTank[i - 1], rotationTank[i - 1]);
             tank.name = "Tank" + i;
-            TankManager tankManger = tank.GetComponent<TankManager>();
-            tankManger.healthBar = GameObject.Find("HealthBar/HealthBarJ" + i).GetComponent<HealthBar>();
-            tankManger.pullCharge = GameObject.Find("PullCharge" + i).GetComponent<PullCharge>();
-            tankManger.idTank = i;
-            tankManger.numberOfShell = GameObject.Find("NumberOfShell" + i).GetComponent<TextMeshProUGUI>();
-            tankManger.numberOfMine = GameObject.Find("NumberOfMine" + i).GetComponent<TextMeshProUGUI>();
-            SplitScreenCamera(tank, tankManger);
+            TankManager tankManager = tank.GetComponent<TankManager>();
+            tankManager.SetHealthBar(GameObject.Find("HealthBar/HealthBarJ" + i).GetComponent<HealthBar>());
+            tankManager.SetPullCharge(GameObject.Find("PullCharge" + i).GetComponent<PullCharge>());
+            tankManager.SetIdTank(i);
+            tankManager.SetNumberOfShell(GameObject.Find("NumberOfShell" + i).GetComponent<TextMeshProUGUI>());
+            tankManager.SetNumberOfMine(GameObject.Find("NumberOfMine" + i).GetComponent<TextMeshProUGUI>());
+            SplitScreenCamera(tank, tankManager);
         }
     }
 
     public void SplitScreenCamera(GameObject tank, TankManager tankManger)
     {
-        if (tankManger.idTank == 1)
+        if (tankManger.GetIdTank() == 1)
         {
             tank.GetComponentInChildren<Camera>().rect = new Rect(0, 0, 0.5f, 1);
         }

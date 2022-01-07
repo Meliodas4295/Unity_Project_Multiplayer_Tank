@@ -1,0 +1,35 @@
+﻿<Properties StartupConfiguration="{DAEFAAED-816C-E948-1426-9DE46A8E2D4B}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SpawnShellManager.cs">
+    <Files>
+      <File FileName="Assets/Scripts/GameManager.cs" Line="91" Column="15" />
+      <File FileName="Assets/Scripts/DestroyShell.cs" />
+      <File FileName="Assets/Scripts/TankManager.cs" />
+      <File FileName="Assets/Scripts/SpawnManager.cs" />
+      <File FileName="Assets/Scripts/HealthBar.cs" />
+      <File FileName="Assets/Scripts/SpawnShellManager.cs" Line="86" Column="23" />
+      <File FileName="Assets/Scripts/SpawnMineManager.cs" />
+      <File FileName="Assets/Scripts/DestroyMine.cs" />
+      <File FileName="Assets/Scripts/PullCharge.cs" />
+      <File FileName="Assets/Scripts/PowerUpManager.cs" />
+      <File FileName="Assets/Scripts/PackManager.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="PROJET_Shooter_multi-joueur_local" expanded="True">
+            <Node name="Assets" expanded="True" selected="True">
+              <Node name="Scripts" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="720c0453-742b-4e00-a508-11fb5a2072f0" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

@@ -11,6 +11,7 @@ TagManager:
   - Shield
   - ThunderBolt
   - MunitionPack
+  - UnlimitedAmmunition
   layers:
   - Default
   - TransparentFX

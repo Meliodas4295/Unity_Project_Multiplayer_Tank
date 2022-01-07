@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class DestroyMine : MonoBehaviour
 {
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Stop();
         gameObject.GetComponentInChildren<ParticleSystem>().Stop();
     }
 
@@ -18,12 +21,13 @@ public class DestroyMine : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Time.time > other.GetComponentInChildren<SpawnMineManager>().timeBeforeActivation + 5f)
+        if (Time.time > other.GetComponentInChildren<SpawnMineManager>().GetTimeBeforeActivation() + 5f)
         {
             if (other.gameObject.CompareTag("Tank"))
             {
                 gameObject.GetComponentInChildren<ParticleSystem>().Play();
                 Destroy(gameObject, 0.5f);
+                audioSource.PlayOneShot(audioSource.clip);
                 other.gameObject.GetComponent<TankManager>().SetDamageToTank(0.3f);
             }
         }

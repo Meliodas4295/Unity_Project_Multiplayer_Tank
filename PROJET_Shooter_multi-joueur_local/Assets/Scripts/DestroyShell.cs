@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class DestroyShell : MonoBehaviour
 {
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Stop();
         gameObject.GetComponentInChildren<ParticleSystem>().Stop();
     }
 
@@ -24,5 +27,6 @@ public class DestroyShell : MonoBehaviour
         }
         gameObject.GetComponentInChildren<ParticleSystem>().Play();
         Destroy(gameObject,0.5f);
+        audioSource.PlayOneShot(audioSource.clip);
     }
 }

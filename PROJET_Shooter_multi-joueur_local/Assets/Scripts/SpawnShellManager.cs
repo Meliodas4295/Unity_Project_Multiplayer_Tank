@@ -6,19 +6,40 @@ public class SpawnShellManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject shellPrefab;
-    public float timePressed;
+    private float timePressed;
     private float timeDrop;
-    public float resetMunitionTime;
+    private float resetMunitionTime;
+    private AudioSource audioSource;
+    private TankManager tankManager;
 
+    public float GetTimePressed()
+    {
+        return this.timePressed;
+    }
+    public void SetTimePressed(float timePressed)
+    {
+        this.timePressed = timePressed;
+    }
+    public float GetResetMunitionTime()
+    {
+        return this.resetMunitionTime;
+    }
+    public void SetResetMunitionTime(float resetMunitionTime)
+    {
+        this.resetMunitionTime = resetMunitionTime;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        tankManager = gameObject.GetComponentInParent<TankManager>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Stop();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!gameObject.GetComponentInParent<TankManager>().GetIsGameOver())
+        if (!tankManager.GetIsGameOver())
         {
             KeyPressedTimer();
         }
@@ -26,7 +47,7 @@ public class SpawnShellManager : MonoBehaviour
 
     void KeyPressedTimer()
     {
-        if (gameObject.GetComponentInParent<TankManager>().numberMunition != 0)
+        if (tankManager.GetNumberMunition() != 0 || tankManager.GetIsUnlimitedMunition())
         {
             if (Input.GetKeyDown(PlayerBouton()))
             {
@@ -35,17 +56,18 @@ public class SpawnShellManager : MonoBehaviour
             if (Input.GetKey(PlayerBouton()))
             {
                 timeDrop += Time.deltaTime;
-                gameObject.GetComponentInParent<TankManager>().pullCharge.GetComponent<PullCharge>().Charge(timeDrop/10);
+                tankManager.GetPullCharge().GetComponent<PullCharge>().Charge(timeDrop/10);
             }
 
             if (Input.GetKeyUp(PlayerBouton()))
             {
+                audioSource.PlayOneShot(audioSource.clip);
                 timeDrop = 0;
-                gameObject.GetComponentInParent<TankManager>().pullCharge.GetComponent<PullCharge>().Charge(timeDrop);
+                tankManager.GetPullCharge().GetComponent<PullCharge>().Charge(timeDrop);
                 timePressed = (Time.time - timePressed)+1;
                 ShellManager(timePressed * 40);
-                gameObject.GetComponentInParent<TankManager>().numberMunition -= 1;
-                if(gameObject.GetComponentInParent<TankManager>().numberMunition == 0)
+                tankManager.SetNumberMunition(tankManager.GetNumberMunition() - 1);
+                if(tankManager.GetNumberMunition() == 0)
                 {
                     resetMunitionTime = Time.time;
                 }
@@ -61,7 +83,7 @@ public class SpawnShellManager : MonoBehaviour
 
     KeyCode PlayerBouton()
     {
-        if(gameObject.GetComponentInParent<TankManager>().idTank == 1)
+        if(tankManager.GetIdTank() == 1)
         {
             return KeyCode.Space;
         }
